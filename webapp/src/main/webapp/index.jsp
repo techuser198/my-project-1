@@ -1,38 +1,67 @@
-<form action="action_page.php">
-  <div class="container">
-    <h1>New user Register for DevOps Learning</h1>
-    <p>Please fill in this form to create an account.</p>
-    <hr>
-     
-    <label for="Name"><b>Enter Name</b></label>
-    <input type="text" placeholder="Enter Full Name" name="Name" id="Name" required>
-    <br>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page session="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%
+    // Set security headers
+    response.setHeader("X-Content-Type-Options", "nosniff");
+    response.setHeader("X-Frame-Options", "DENY");
+    response.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'");
+    response.setHeader("Referrer-Policy", "no-referrer");
+    response.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+
+    // Basic logging (server-side)
+    String userAgent = request.getHeader("User-Agent");
+    String remoteIP = request.getRemoteAddr();
+    java.util.Date accessTime = new java.util.Date();
+    System.out.println("INFO: Index.jsp accessed by IP: " + remoteIP + ", User-Agent: " + userAgent + ", at " + accessTime);
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome | My Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <label for="mobile"><b>Enter mobile</b></label>
-    <input type="text" placeholder="Enter moible number" name="mobile" id="mobile" required>
-    <br>
+    <!-- Favicon -->
+    <link rel="icon" href="assets/favicon.ico">
 
-    <label for="email"><b>Enter Email</b></label>
-    <input type="text" placeholder="Enter Email" name="email" id="email" required>
-    <br>
+    <!-- Bootstrap CSS (optional) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
 
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
-    <br>
+<jsp:include page="/WEB-INF/jsp/header.jsp" />
 
-    <label for="psw-repeat"><b>Repeat Password</b></label>
-    <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat" required>
-    <hr>
-    <br>
-    <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
-    <button type="submit" class="registerbtn">Register</button>
-  </div>
-  <div class="container signin">
-    <p>Already have an account? <a href="#">Sign in</a>.</p>
-  </div>
+<div class="container mt-5">
+    <h1 class="display-5">Welcome to <strong>MyApp</strong></h1>
+    <p class="lead">Your secure Java web application is running.</p>
 
-   <h1> Thankyou, Happy Learning </h1>
+    <!-- Dynamic content example -->
+    <c:choose>
+        <c:when test="${not empty sessionScope.username}">
+            <p>Hello, <strong>${sessionScope.username}</strong>! Glad to see you.</p>
+        </c:when>
+        <c:otherwise>
+            <p><a href="login.jsp">Login</a> to access your dashboard.</p>
+        </c:otherwise>
+    </c:choose>
 
-  
-</form>
+    <!-- Server time -->
+    <p class="text-muted mt-4">
+        Server Time: <fmt:formatDate value="<%= new java.util.Date() %>" pattern="dd MMM yyyy HH:mm:ss z"/>
+    </p>
+</div>
+
+<jsp:include page="/WEB-INF/jsp/footer.jsp" />
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
 
